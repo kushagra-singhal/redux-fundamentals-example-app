@@ -1,7 +1,7 @@
 
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from './reducer'
-
+import { thunkMiddleware } from 'redux-thunk'
 // import { sayHiOnDispatch, includeMeaningOfLife } from "./exampleAddons/enhancers"
 import { print1, print2, print3 } from './exampleAddons/middleware'
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -16,16 +16,16 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 // }
 
 // const store = createStore(rootReducer, preloadedState)
-const middlewareEnhancer = applyMiddleware(print1, print2, print3)
+// const middlewareEnhancer = applyMiddleware(print1, print2, print3)
 
 //  the Redux core includes a compose function that can be used to merge multiple enhancers together.
 
-const composeEnhancer = composeWithDevTools(middlewareEnhancer)
+const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
 
 // middlewarer
 
 // Pass enhancer as the second arg, since there's no preloadedState
-const store = createStore(rootReducer, composeEnhancer)
+const store = createStore(rootReducer, composedEnhancer)
 
 // export default store
 

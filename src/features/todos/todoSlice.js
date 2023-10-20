@@ -1,3 +1,6 @@
+import { createSelector } from "reselect"
+import './api/client'
+
 const initialState = [
 //   { id: 0, text: 'Learn React', completed: true },
 //   { id: 1, text: 'Learn Redux', completed: false, color: 'purple' },
@@ -7,6 +10,37 @@ const initialState = [
 function nextTodoId(todos) {
   const maxId = todos.reduce((maxId, todo) => Math.max(todo.id, maxId), -1)
   return maxId + 1
+}
+
+export const selectTodoIds = createSelector(
+  state => state.todos,
+  todos => todos.map(todo => todo.id)
+)
+
+export const todoLoaded = todos => {
+  return {
+    type: 'todos/todosLoaded',
+    payload: todos
+  }
+}
+
+export async function fetchTodos(dispatch, getState) {
+  const response = await client.get('/fakeApi/todos')
+}
+
+export const todoAdded = todo => {
+  return {
+    type: 'todos/todoAdded',
+    payload: todo
+  }
+}
+
+export function saveNewTodo(text) {
+  return async function saveNewTodoThunk(dispatch, getState) {
+    const initialTodo = { text }
+    const response = await client.post('/fakeApi/todos', { todo: initialTodo })
+    dispatch(todoAdded(response.todo))
+  }
 }
 
 export default function todosReducer(state = initialState, action) {

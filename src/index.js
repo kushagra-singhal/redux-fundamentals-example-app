@@ -5,6 +5,7 @@ import App from './App'
 import store from './store'
 
 import './api/server'
+import { Provider } from 'react-redux'
 
 console.log('Dispatching action')
 store.dispatch({ type: 'todos/todoAdded', payload: 'Learn about actions'})
@@ -53,8 +54,12 @@ const unsubscribe = store.subscribe(() =>
 // store.dispatch({ type: 'todo/todoAdded', payload: 'try creating a store' })
 
 ReactDOM.render(
+   // Render a `<Provider>` around the entire `<App>`,
+  // and pass the Redux store to it as a prop
   <React.StrictMode>
+    <Provider store={store}>
     <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )
